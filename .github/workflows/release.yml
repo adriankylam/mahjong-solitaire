@@ -19,11 +19,11 @@ jobs:
       - name: Install node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
 
-      - name: Write github.io app config
+      - name: Write ffalt.github.io app config
         run: |
-          echo "{\"name\": \"Mah\", \"kyodai\":true, \"editor\":true}" > custom-build-config.json
+          echo "{\"url\": \"https://ffalt.github.io/mah/\", \"name\": \"Mah\", \"title\": \"Mah - Mahjong\", \"category\": \"A Mahjong Solitaire Board Game\", \"description\": \"The original open source version of many Mahjong games out there. Completely free, no ads, no tracking.\", \"kyodai\":true, \"editor\":true}" > custom-build-config.json
 
       - name: Install dependencies
         run: |
@@ -65,23 +65,14 @@ jobs:
 
       - name: Create release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body_path: ./RELEASELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          name: Release ${{ github.ref_name }}
+          bodyFile: ./RELEASELOG.md
           draft: false
           prerelease: false
-
-      - name: Upload release package
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/mah-release.zip
-          asset_name: mah-release.zip
-          asset_content_type: application/zip
+          artifacts: ./dist/mah-release.zip
+          artifactContentType: application/zip
+          makeLatest: true

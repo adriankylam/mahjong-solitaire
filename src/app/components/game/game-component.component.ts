@@ -29,9 +29,10 @@ interface ElemEx extends HTMLElement {
 }
 
 @Component({
-	selector: 'app-game-component',
-	templateUrl: './game-component.component.html',
-	styleUrls: ['./game-component.component.scss']
+    selector: 'app-game-component',
+    templateUrl: './game-component.component.html',
+    styleUrls: ['./game-component.component.scss'],
+    standalone: false
 })
 export class GameComponent {
 	game: Game;
@@ -45,7 +46,7 @@ export class GameComponent {
 	constructor(public app: AppService, private workerService: WorkerService) {
 		this.game = app.game;
 		this.fullScreenEnabled = this.canFullscreen();
-		this.title = `${app.name} Solitaire v${environment.version}`;
+		this.title = `${app.name} v${environment.version}`;
 	}
 
 	showNewGame(): void {
