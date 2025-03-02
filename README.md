@@ -1,4 +1,4 @@
-# Mah
+# Mahjong
 
 A Mahjong Solitaire Game
 
